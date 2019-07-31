@@ -12,27 +12,6 @@ def cosine_sim(u, v):
     return 1 - cosine(u, v)
 
 
-def load_word_vector(num_tokens: int, dimension=300):
-    """
-    load pre-trained GloVe embeddings
-    :param num_tokens: number of tokens used to train word vectors
-    :param dimension: dimension of word vectors
-    :return: dictionary mapping word to its vector
-    """
-    path = 'GloVe/glove' + str(num_tokens) + 'B' + str(dimension) + '.txt'
-    f = open(path, 'r')
-    glove = {}
-    for line in f:
-        split_line = line.split()
-        word = ''.join(split_line[0:len(split_line) - 300])
-        if word in glove.keys():
-            continue
-        embedding = np.asarray(split_line[len(split_line) - 300:], dtype='float32')
-        glove[word] = embedding
-    f.close()
-    return glove
-
-
 def finish_similar_pairs(input_words, embeddings):
     """
     find a word to complete the analogy: A is to B as C is to ?
@@ -53,3 +32,9 @@ def finish_similar_pairs(input_words, embeddings):
             max_sim = curr_sim
             closest_word = w
     return closest_word
+
+
+def print_sentence(input_words, output_word):
+    word_1, word_2, word_3 = input_words
+    print("%s is to %s as %s is to %s" % (word_1, word_2, word_3, output_word))
+
